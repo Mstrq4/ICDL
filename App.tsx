@@ -38,7 +38,7 @@ const Layout: React.FC<{ children: React.ReactNode; activeView: string; setView:
       {/* Footer */}
       <footer className="mt-20 py-8 border-t border-white/10 text-center text-slate-400 text-sm">
         <p>جامعة ذمار - قسم الأثار والسياحة</p>
-        <p className="mt-1">إعداد أ. يوسف الدرعي | تصميم وتطوير النظام الذكي</p>
+        <p className="mt-1">إعداد يوسف الدرعي | تصميم وتطوير النظام الذكي</p>
       </footer>
     </div>
   );
