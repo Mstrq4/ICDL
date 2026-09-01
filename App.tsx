@@ -322,7 +322,7 @@ const QuizRunner = ({ exam, exit }: { exam: ExamModel; exit: () => void }) => {
   const [shake, setShake] = useState(false);
   
   const currentQ = exam.questions[currentQIndex];
-  const progress = ((currentQIndex) / exam.questions.length) * 100;
+  const progress = ((currentQIndex + 1) / exam.questions.length) * 100;
 
   const handleOptionClick = (idx: number) => {
     if (selectedOption !== null) return; // Prevent change
