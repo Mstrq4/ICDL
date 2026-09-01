@@ -125,7 +125,6 @@ const Summary = () => {
             </div>
             
             <div className="p-6">
-              {/* Render Logic based on Type */}
               {section.type === SectionType.GRID && (
                  <div className="grid md:grid-cols-2 gap-4">
                    {section.content.map((item: any, idx: number) => (
@@ -232,7 +231,6 @@ const ShortcutsLibrary = () => {
       </div>
 
       <div className="grid md:grid-cols-4 gap-6">
-        {/* Sidebar */}
         <div className="md:col-span-1 space-y-2">
            {courseData.shortcutsLibraries.map(lib => (
              <button
@@ -246,7 +244,6 @@ const ShortcutsLibrary = () => {
            ))}
         </div>
 
-        {/* Content */}
         <div className="md:col-span-3">
            {courseData.shortcutsLibraries.map(lib => (
              lib.id === activeTab && (
@@ -322,21 +319,19 @@ const QuizRunner = ({ exam, exit }: { exam: ExamModel; exit: () => void }) => {
   const [shake, setShake] = useState(false);
   
   const currentQ = exam.questions[currentQIndex];
-  const progress = ((currentQIndex) / exam.questions.length) * 100;
+  const progress = ((currentQIndex + 1) / exam.questions.length) * 100;
 
   const handleOptionClick = (idx: number) => {
-    if (selectedOption !== null) return; // Prevent change
+    if (selectedOption !== null) return;
     
     setSelectedOption(idx);
     const isCorrect = idx === currentQ.correctIndex;
     
     if (isCorrect) {
       setScore(s => s + 1);
-      // Optional: Play correct sound
     } else {
       setShake(true);
       setTimeout(() => setShake(false), 500);
-      // Optional: Play wrong sound
     }
 
     setAnswers(prev => [...prev, { qId: currentQ.id, correct: isCorrect, userAns: idx }]);
@@ -351,14 +346,12 @@ const QuizRunner = ({ exam, exit }: { exam: ExamModel; exit: () => void }) => {
     }
   };
 
-  // PDF Generation Logic
   const printResult = () => {
     const element = document.getElementById('pdf-print-zone');
     if (!element) return;
     
-    // Config for html2pdf
     const opt = {
-      margin: [10, 10, 10, 10], // top, left, bottom, right
+      margin: [10, 10, 10, 10],
       filename: `Result_${exam.id}_${new Date().toISOString().split('T')[0]}.pdf`,
       image: { type: 'jpeg', quality: 0.98 },
       html2canvas: { scale: 2, useCORS: true },
@@ -366,7 +359,6 @@ const QuizRunner = ({ exam, exit }: { exam: ExamModel; exit: () => void }) => {
       pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
     };
 
-    // Workaround for display:none elements with html2pdf:
     const clone = element.cloneNode(true) as HTMLElement;
     clone.style.display = 'block';
     clone.style.background = 'white';
@@ -374,7 +366,6 @@ const QuizRunner = ({ exam, exit }: { exam: ExamModel; exit: () => void }) => {
     clone.style.padding = '40px';
     clone.style.width = '100%';
     
-    // We need to append to body temporarily to render
     const container = document.createElement('div');
     container.style.position = 'fixed';
     container.style.top = '-10000px';
@@ -400,10 +391,7 @@ const QuizRunner = ({ exam, exit }: { exam: ExamModel; exit: () => void }) => {
 
     return (
       <div className="animate-fade-in max-w-4xl mx-auto">
-        {/* PDF Hidden Zone */}
         <div id="pdf-print-zone" className="text-black hidden" style={{ direction: 'rtl', fontFamily: 'Cairo, sans-serif' }}>
-          
-          {/* PDF Header */}
           <div className="border-b-4 border-black pb-6 mb-8 text-center">
              <div className="flex justify-between items-center mb-4 px-10">
                <div className="text-right">
@@ -424,7 +412,6 @@ const QuizRunner = ({ exam, exit }: { exam: ExamModel; exit: () => void }) => {
              </div>
           </div>
 
-          {/* Questions List */}
           <div className="space-y-6">
              {exam.questions.map((q, idx) => {
                const ans = answers.find(a => a.qId === q.id);
@@ -462,13 +449,11 @@ const QuizRunner = ({ exam, exit }: { exam: ExamModel; exit: () => void }) => {
              })}
           </div>
 
-          {/* PDF Footer */}
           <div className="mt-10 pt-4 border-t-2 border-black text-center text-sm text-gray-500">
              تم استخراج هذا التقرير آلياً عبر نظام مهارات الحاسوب التفاعلي | إعداد أ. يوسف الدرعي
           </div>
         </div>
 
-        {/* Display Dashboard */}
         <div className="glass-panel p-8 rounded-3xl text-center mb-8">
           <h2 className="text-3xl font-bold mb-6">النتيجة النهائية</h2>
           <div className="w-48 h-48 mx-auto mb-6">
@@ -488,7 +473,6 @@ const QuizRunner = ({ exam, exit }: { exam: ExamModel; exit: () => void }) => {
           </div>
         </div>
 
-        {/* Mistakes Review */}
         <div className="space-y-4">
             <h3 className="text-xl font-bold mb-4 border-b border-white/10 pb-2">مراجعة الأخطاء والتعليلات</h3>
             {answers.filter(a => !a.correct).length === 0 ? (
@@ -530,10 +514,8 @@ const QuizRunner = ({ exam, exit }: { exam: ExamModel; exit: () => void }) => {
     );
   }
 
-  // Active Question View
   return (
     <div className="max-w-3xl mx-auto">
-      {/* Top Bar */}
       <div className="glass-panel p-4 rounded-2xl mb-6 flex justify-between items-center sticky top-24 z-30 shadow-lg backdrop-blur-xl border border-white/10">
         <div className="flex items-center gap-4">
            <button onClick={exit} className="text-slate-400 hover:text-white transition-colors"><i className="fa-solid fa-xmark text-xl"></i></button>
@@ -544,7 +526,6 @@ const QuizRunner = ({ exam, exit }: { exam: ExamModel; exit: () => void }) => {
         </div>
       </div>
       
-      {/* Gradient Progress Bar */}
       <div className="h-3 bg-slate-800 rounded-full mb-8 overflow-hidden shadow-inner">
         <div 
           className="h-full bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 transition-all duration-500 ease-out shadow-[0_0_10px_rgba(59,130,246,0.5)]" 
@@ -552,7 +533,6 @@ const QuizRunner = ({ exam, exit }: { exam: ExamModel; exit: () => void }) => {
         ></div>
       </div>
 
-      {/* Question Card */}
       <div className={`glass-card p-8 md:p-12 rounded-3xl mb-8 relative transition-all duration-300 ${shake ? 'animate-shake border-red-500 shadow-[0_0_30px_rgba(239,68,68,0.2)]' : 'border-white/10'}`}>
         <div className="flex items-start gap-4 mb-8">
            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center flex-shrink-0 shadow-lg">
@@ -563,7 +543,7 @@ const QuizRunner = ({ exam, exit }: { exam: ExamModel; exit: () => void }) => {
         
         <div className="space-y-4">
           {currentQ.options.map((opt, idx) => {
-            let stateClass = "hover:bg-white/10 border-white/10 hover:border-white/30"; // default
+            let stateClass = "hover:bg-white/10 border-white/10 hover:border-white/30";
             let animationClass = "";
             
             if (selectedOption !== null) {
@@ -592,7 +572,6 @@ const QuizRunner = ({ exam, exit }: { exam: ExamModel; exit: () => void }) => {
           })}
         </div>
 
-        {/* Explanation Logic */}
         {selectedOption !== null && selectedOption !== currentQ.correctIndex && (
            <div className="mt-8 animate-fade-in bg-red-950/40 border border-red-500/30 p-6 rounded-2xl text-red-200 shadow-lg">
              <div className="font-black text-lg mb-2 flex items-center gap-2 text-red-400">
@@ -610,7 +589,6 @@ const QuizRunner = ({ exam, exit }: { exam: ExamModel; exit: () => void }) => {
         )}
       </div>
 
-      {/* Next Button */}
       {selectedOption !== null && (
         <button 
           onClick={nextQuestion}
@@ -622,8 +600,6 @@ const QuizRunner = ({ exam, exit }: { exam: ExamModel; exit: () => void }) => {
     </div>
   );
 };
-
-// --- APP COMPONENT ---
 
 export default function App() {
   const [view, setView] = useState('home');
